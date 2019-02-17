@@ -26,12 +26,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- 商品列表 -->
+        <div class="goods">
+            <div class="goods_item" v-for="(item,index) in list" :key="index" @click="gotoDetail()">
+                <good-item :img="item.goodsImg" :desc="item.desc" :price="item.price" :discount="item.discount"></good-item>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+import goodItem from "@/components/goodItem.vue";
+
 export default {
     name:'goodList',
+    components:{
+        goodItem
+    },
+    mounted() {
+        this.getGoodsList();
+    },
+    data(){
+        return {
+            // 工具栏索引
+            currentIdx: 0,
+                // 商品列表
+            list: ""
+        }
+    },
     methods:{
         // 回退
         goBack() {
@@ -43,6 +67,25 @@ export default {
                 path: "/"
             });
         },
+        // 获取商品列表数据
+        getGoodsList() {
+            axios.get("/api/goodsList.json").then(res => {
+                if (res.data.code == 200) {
+                this.list = res.data.goodslist;
+                }
+                console.log("商品列表数据：", res);
+            });
+        },
+        // 筛选栏点击
+        filterClick(idx) {
+            this.currentIdx = idx;
+        },
+        // 点击商品块
+        gotoDetail(){
+            this.$router.push({
+                path: "/goodDetail"
+            });
+        }
     }
 }
 </script>
@@ -92,6 +135,19 @@ export default {
         }
         .on {
             color: @themeColor;
+        }
+    }
+
+    // 商品列表
+    .goods {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0.213333rem 0.133333rem;
+        margin-top: 83px;
+        .goods_item {
+            margin-bottom: 0.266667rem;
         }
     }
 }

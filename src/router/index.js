@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/view/Home'
 import Classify from '@/view/Classify'
 import goodList from '@/view/goodList'
+import goodDetail from '@/view/goodDetail'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/goodlist',
       name: 'goodList',
       component: goodList
+    },
+    {
+      path: '/gooddetail',
+      name: 'goodDetail',
+      component: goodDetail
     }
   ]
 })

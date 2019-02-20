@@ -8,12 +8,16 @@ import 'styles/reset.css'
 import 'styles/border.css'
 import 'styles/iconfont.css'
 import 'lib-flexible/flexible.js'
+import 'styles/override.css'
 
 Vue.config.productionTip = false
 
 Vue.use(VueLazyload, {
   loading: '/static/images/loading.gif'
 })
+
+import {Button, AddressList, AddressEdit } from 'vant';
+Vue.use(Button).use(AddressList).use(AddressEdit)
 
 
 /* eslint-disable no-new */

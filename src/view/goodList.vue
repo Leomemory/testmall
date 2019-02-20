@@ -73,7 +73,7 @@ export default {
                 if (res.data.code == 200) {
                 this.list = res.data.goodslist;
                 }
-                console.log("商品列表数据：", res);
+                // console.log("商品列表数据：", res);
             });
         },
         // 筛选栏点击

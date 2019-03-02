@@ -103,12 +103,12 @@ export default {
             ],
             swiperOption: {
                 pagination: {
-                el: ".swiper-pagination",
-                dynamicBullets: true
+                    el: ".swiper-pagination",
+                    dynamicBullets: true
                 },
                 autoplay: {
-                delay: 2500,
-                disableOnInteraction: false
+                    delay: 2500,
+                    disableOnInteraction: false
                 }
             },
             activeIndex: 99

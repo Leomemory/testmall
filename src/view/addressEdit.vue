@@ -9,18 +9,29 @@
         <div class="content">
             <van-address-edit :area-list="areaList" :address-info="addressInfo" show-postal :show-delete="isShowDeleteBtn" show-set-default @save="onSave" @delete="onDelete()" />
         </div>
+        
     </div>
 </template>
 
 <script>
 import areaList from "@/assets/js/area";
+import { mapMutations } from "vuex";
+
 export default {
     name:'addressEdit',
     data(){
         return{
             areaList,
             addressInfo: {},
-            isShowDeleteBtn:false
+            isShowDeleteBtn:false,
+            queryIdx: ""
+        }
+    },
+    created(){
+        if(this.$route.query.idx>=0){
+            this.queryIdx=this.$route.query.idx;
+            this.addressInfo=this.$store.state.address[this.$route.query.idx];
+            this.isShowDeleteBtn=true
         }
     },
     methods:{
@@ -28,6 +39,7 @@ export default {
         goBack() {
             this.$router.go(-1);
         },
+        // 保存或修改
         onSave(e){
             // console.log(e)
             let data = {};
@@ -38,8 +50,30 @@ export default {
             data.areaCode = e.areaCode;
             data.postalCode = e.postalCode;
             data.isDefault = e.isDefault;
-            console.log(data)
-        }
+            // console.log(data)
+
+            // let addressData=JSON.parse(localStorage.getItem('address')) || [];
+            // addressData.push(data);
+            // localStorage.setItem('address',JSON.stringify(addressData));
+
+            if (this.queryIdx !== "") {
+                this.editAddress({ data: data, idx: this.queryIdx });
+            } else {
+                this.saveAddress(data);
+            }
+
+            this.$router.push({
+                path: "/address"
+            });
+        },
+        // 删除
+        onDelete(e){
+            this.removeAddress(this.idx);
+            this.$router.push({
+                path: "/address"
+            });
+        },
+        ...mapMutations(["saveAddress", "removeAddress", "editAddress"])
     }
 }
 </script>

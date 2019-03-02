@@ -5,6 +5,7 @@
             <span class="iconfont" @click="goBack()">&#xe660;</span>
             <div class="title">选择收货地址</div>
         </div>
+        {{this.$store.state.city}}
         <!-- 地址列表内容 -->
         <div class="content">
             <van-address-list v-model="chosenAddressId" :list="list" @add="onAdd()" @edit="onEdit()" add-button-text="新增地址" />
@@ -17,16 +18,19 @@ export default {
     name:'Address',
     data(){
         return{
-            chosenAddressId:"1",
-            list:[
-                {
-                    id:"1",
-                    name:'张三',
-                    tel:'234253611',
-                    address:'浙江省杭州市'
-                }
-            ]
+            chosenAddressId:"0",
+            list:[]
         }
+    },
+    mounted(){
+        let addressList = this.$store.state.address;
+        addressList.forEach((element,idx)=>{
+            element.id=idx + "";
+            if(element.isDefault){
+                this.chosenAddressId=element.id;
+            }
+        })
+        this.list = addressList;
     },
     methods:{
         // 回退
@@ -41,6 +45,15 @@ export default {
                 path: "/addressedit"
             });
         },
+        // 单项编辑
+        onEdit(item, index) {
+            this.$router.push({
+                path: "/addressEdit",
+                query: {
+                idx: index
+                }
+            });
+        }
     }
 }
 </script>
